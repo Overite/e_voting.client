@@ -1,15 +1,15 @@
-import { StyleSheet, Image, Button, ViewStyle } from 'react-native';
+import { StyleSheet, Image, Button, ViewStyle, ImageStyle } from 'react-native';
 import { Text, View } from '@/components/Themed';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { e_voting_green } from '@/constants/Colors';
 import { Link } from 'expo-router';
 import { images } from '@/constants/images';
 import { utils_styles } from '@/constants/utils_styles';
-import use_font from '@/hooks/fonts';
+import use_lora_font from '@/hooks/fonts/lora_font';
 
 export default function Welcome() {
 
-    const { } = use_font();
+    const { } = use_lora_font();
 
     return (
         <SafeAreaView style={styles.safe_area}>
@@ -21,7 +21,7 @@ export default function Welcome() {
                         <Text>Accessibility . Securit y. Accuracy</Text>
                     </View>
 
-                    <Link href={'/capture_screen'} style={{ ...styles.cta_btn, fontFamily: 'lora-bold' }} push>Get started</Link>
+                    <Link href={'/'} style={{ ...styles.cta_btn, fontFamily: 'lora-bold' }} push>Get started</Link>
                 </View>
 
                 <Image style={styles.tetfund_frame_style} source={images.tetfund_frame} />
@@ -30,7 +30,7 @@ export default function Welcome() {
     );
 }
 
-const { safe_area_styles } = utils_styles;
+const { safe_area_styles, tetfund_frame_style } = utils_styles;
 
 const styles = StyleSheet.create({
     safe_area: safe_area_styles as ViewStyle,
@@ -64,9 +64,5 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         borderRadius: 5,
     },
-    tetfund_frame_style: {
-        position: 'absolute',
-        bottom: 10,
-        right: 10
-    }
+    tetfund_frame_style: tetfund_frame_style as ImageStyle
 });

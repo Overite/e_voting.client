@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import * as Font from 'expo-font';
 import { lora_font } from '@/constants/fonts';
 
-function use_font() {
+function use_lora_font() {
     
     // Google Fonts
     const [font_loaded, setFont_loaded] = useState(false);
@@ -24,4 +24,4 @@ function use_font() {
     return {font_loaded}
 }
 
-export default use_font;
+export default use_lora_font;

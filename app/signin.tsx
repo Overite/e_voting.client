@@ -8,10 +8,10 @@ import { AntDesign } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { useState } from "react";
 import { Feather } from '@expo/vector-icons';
-import use_font from "@/hooks/fonts";
+import use_lora_font from "@/hooks/fonts/lora_font";
 
 function signin() {
-    const { } = use_font();
+    const { } = use_lora_font();
 
     const [password_shown, set_password_shown] = useState(false);
     const [form_data, set_form_data] = useState({
@@ -63,7 +63,7 @@ function signin() {
 
 export default signin;
 
-const { disabled_cta_btn, safe_area_styles } = utils_styles;
+const { disabled_cta_btn, safe_area_styles, capture_btn } = utils_styles;
 
 const styles = StyleSheet.create({
     safe_area: safe_area_styles as ViewStyle,
@@ -123,13 +123,7 @@ const styles = StyleSheet.create({
         color: 'lightgray',
         fontSize: 20,
     },
-    cta_btn: {
-        color: 'white',
-        backgroundColor: e_voting_green,
-        paddingVertical: 10,
-        textAlign: 'center',
-        borderRadius: 5,
-    },
+    capture_btn: capture_btn as ViewStyle,
     disabled_cta_btn,
     tetfund_frame_style: {
         position: 'absolute',

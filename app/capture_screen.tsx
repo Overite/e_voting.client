@@ -1,15 +1,17 @@
 import { Text, View } from "@/components/Themed";
 import { utils_styles } from "@/constants/utils_styles";
-import { StyleSheet, ViewStyle } from "react-native";
+import { ImageStyle, StyleSheet, ViewStyle } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Image } from "react-native";
 import { images } from "@/constants/images";
 import { FontAwesome6 } from '@expo/vector-icons';
 import { e_voting_green } from "@/constants/Colors";
-import use_font from "@/hooks/fonts";
+import { useState } from "react";
+import use_lora_font from "@/hooks/fonts/lora_font";
 
 function capture_screen() {
-    const { } = use_font();
+    const { } = use_lora_font();
+    const [img_captured, set_img_captured] = useState(true);
 
     return (
         <SafeAreaView style={styles.safe_area}>
@@ -21,7 +23,11 @@ function capture_screen() {
 
                 <View style={styles.scanner_block}>
 
-                    <View style={styles.scanner_liner}></View>
+                    {img_captured ? (
+                        <Image style={styles.capture_img} source={images.evs} />
+                    ) : (
+                        <View style={styles.scanner_liner}></View>
+                    )}
 
                     <View style={{ ...styles?.['corner'], bottom: '96%', right: '98%', transform: 'rotate(224deg)' }}>
                         <FontAwesome6 name="angle-right" size={24} color="black" />
@@ -39,13 +45,15 @@ function capture_screen() {
 
                 <Text style={styles.capture_btn}>Capture</Text>
             </View>
+
+            <Image style={styles.tetfund_frame_style} source={images.tetfund_frame} />
         </SafeAreaView>
     )
 }
 
 export default capture_screen;
 
-const { disabled_cta_btn, safe_area_styles } = utils_styles;
+const { disabled_cta_btn, safe_area_styles, capture_btn, tetfund_frame_style } = utils_styles;
 
 const styles = StyleSheet.create({
     safe_area: safe_area_styles as ViewStyle,
@@ -56,7 +64,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginTop: 140,
+        marginTop: 100,
         marginLeft: 'auto',
         marginRight: 'auto',
     },
@@ -80,19 +88,16 @@ const styles = StyleSheet.create({
         height: 2,
         backgroundColor: e_voting_green
     },
+    capture_img: {
+        width: '100%',
+        height: '100%',
+        objectFit: 'contain'
+    },
     corner: {
         position: 'absolute',
         backgroundColor: 'transparent'
     },
-    capture_btn: {
-        width: '100%',
-        height: 42,
-        paddingVertical: 10,
-        textAlign: 'center',
-        borderRadius: 4,
-        backgroundColor: e_voting_green,
-        color: 'white',
-        fontFamily: 'lora-bold'
-    },
-    disabled_cta_btn
+    capture_btn: capture_btn as ViewStyle,
+    disabled_cta_btn,
+    tetfund_frame_style: tetfund_frame_style as ImageStyle
 })

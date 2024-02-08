@@ -4,10 +4,19 @@ import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
-
 import { useColorScheme } from '@/components/useColorScheme';
-import { View } from '@/components/Themed';
 import { MaterialIcons } from '@expo/vector-icons';
+import { e_voting_green } from '@/constants/Colors';
+import { TouchableOpacity } from 'react-native';
+import { View, Text } from '@/components/Themed';
+import use_ubuntu_font from '@/hooks/fonts/ubuntu_medium_font';
+import { Entypo } from '@expo/vector-icons';
+import { useAppDispatch } from '@/hooks/state/use_base_hooks';
+import { toggle_right_menu_shown } from '@/state/slices/layout_slice';
+import { Provider } from 'react-redux';
+import { store } from '@/state/store';
+import use_layout_selector from '@/hooks/state/use_layout_selector';
+import { transform } from '@babel/core';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -46,25 +55,71 @@ export default function RootLayout() {
   return <RootLayoutNav />;
 }
 
+const DashboardRightHeader = () => {
+
+  const dispatch = useAppDispatch();
+  const { right_menu_shown } = use_layout_selector();
+
+  const set_right_menu_shown = () => {
+    dispatch(toggle_right_menu_shown())
+  }
+
+  return <View
+    style={{ backgroundColor: 'transparent', width: 'auto', height: 'auto' }}
+  >
+    <TouchableOpacity onPress={() => set_right_menu_shown()} style={{ display: 'flex', flexDirection: 'row', gap: 3, alignItems: 'center', padding: 3, borderRadius: 4, backgroundColor: 'white' }}>
+      <Text style={{ color: 'black', fontSize: 12, fontWeight: '500' }}>Connected</Text>
+
+      <Entypo style={{ transform: right_menu_shown ? 'rotate(180deg)' : 'rotate(0deg)' }} name="chevron-down" size={12} color="black" />
+    </TouchableOpacity>
+  </View>
+}
+
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
+  const { } = use_ubuntu_font();
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack initialRouteName="capture_screen"
-        screenOptions={{
-          headerShown: false,
-          headerLeft: () => (
-            <View>
-              <MaterialIcons name="keyboard-backspace" size={24} color="black" />
-            </View>
-          )
-        }}
-      >
-        <Stack.Screen name="index" />
-        <Stack.Screen name="signin" />
-        <Stack.Screen name="capture_screen" />
-      </Stack>
-    </ThemeProvider>
+    <Provider store={store}>
+      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+        <Stack initialRouteName="dashboard"
+          screenOptions={{
+            headerStyle: {
+              backgroundColor: e_voting_green,
+            },
+            headerShadowVisible: false,
+          }}
+        >
+          <Stack.Screen name="index" options={{ headerShown: false }} />
+          <Stack.Screen name="signin" />
+          <Stack.Screen name="capture_screen" options={{
+            headerLeft: () =>
+              <TouchableOpacity style={{ backgroundColor: 'transarent' }}>
+                <MaterialIcons style={{ backgroundColor: 'transparent' }} name="keyboard-backspace" size={24} color="black" />
+              </TouchableOpacity>,
+            headerTitle: '',
+            headerStyle: {
+              backgroundColor: 'white',
+            }
+          }} />
+          <Stack.Screen name="dashboard" options={{
+            headerLeft: () =>
+              <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 10, backgroundColor: 'transport' }}>
+                <TouchableOpacity style={{ backgroundColor: 'transarent' }}>
+                  <MaterialIcons name="menu" size={24} color="white" />
+                </TouchableOpacity>
+
+                <Text style={{ color: 'white', fontWeight: '600', fontSize: 25, fontFamily: 'Ubuntu-Medium' }}>Dashboard</Text>
+              </View>,
+            headerRight: () => <DashboardRightHeader />
+            ,
+            headerTitle: '',
+            headerStyle: {
+              backgroundColor: e_voting_green,
+            }
+          }} />
+        </Stack>
+      </ThemeProvider>
+    </Provider>
   );
 }

@@ -1,32 +1,17 @@
 import { Text, View } from "@/components/Themed";
 import { e_voting_green } from "@/constants/Colors";
 import { images } from "@/constants/images";
-import { safe_area_styles } from "@/constants/safe-area_styles";
+import { utils_styles } from "@/constants/utils_styles";
 import { StyleSheet, ViewStyle, Image, TextInput, Button } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { AntDesign } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
-import { useEffect, useState } from "react";
-import * as Font from 'expo-font';
-import lora_font from "../assets/fonts/Lora-Bold.ttf";
+import { useState } from "react";
+import { Feather } from '@expo/vector-icons';
+import use_font from "@/hooks/fonts";
 
 function signin() {
-    // Google Fonts
-    const [font_loaded, setFont_loaded] = useState(false);
-
-    useEffect(() => {
-        // Load the custom font
-        const loadFont = async () => {
-            await Font.loadAsync({
-                'lora-bold': lora_font,
-            });
-            setFont_loaded(true);
-        };
-
-        if (!font_loaded) {
-            loadFont();
-        }
-    }, [])
+    const { } = use_font();
 
     const [password_shown, set_password_shown] = useState(false);
     const [form_data, set_form_data] = useState({
@@ -63,7 +48,7 @@ function signin() {
                     </View>
 
                     <View style={styles.remeber_me_block}>
-                        {remember_me ? (<AntDesign name="checksquare" size={24} color={e_voting_green} />) : (<Text style={styles.dont_remember_me} />)}
+                        {remember_me ? (<AntDesign name="checksquare" size={24} color={e_voting_green} />) : (<Feather name="square" size={24} color={e_voting_green} />)}
                         <Text style={styles.remeber_me_text}>Remeber me</Text>
                     </View>
 
@@ -77,6 +62,8 @@ function signin() {
 }
 
 export default signin;
+
+const { disabled_cta_btn, safe_area_styles } = utils_styles;
 
 const styles = StyleSheet.create({
     safe_area: safe_area_styles as ViewStyle,
@@ -136,13 +123,6 @@ const styles = StyleSheet.create({
         color: 'lightgray',
         fontSize: 20,
     },
-    dont_remember_me: {
-        width: 20,
-        height: 20,
-        borderColor: e_voting_green,
-        borderWidth: 1,
-        backgroundColor: 'white'
-    },
     cta_btn: {
         color: 'white',
         backgroundColor: e_voting_green,
@@ -150,9 +130,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         borderRadius: 5,
     },
-    disabled_cta_btn: {
-        opacity: 0.6
-    },
+    disabled_cta_btn,
     tetfund_frame_style: {
         position: 'absolute',
         bottom: 10,

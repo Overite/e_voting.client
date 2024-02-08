@@ -6,7 +6,8 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 
 import { useColorScheme } from '@/components/useColorScheme';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { View } from '@/components/Themed';
+import { MaterialIcons } from '@expo/vector-icons';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -50,13 +51,19 @@ function RootLayoutNav() {
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack
+      <Stack initialRouteName="capture_screen"
         screenOptions={{
           headerShown: false,
+          headerLeft: () => (
+            <View>
+              <MaterialIcons name="keyboard-backspace" size={24} color="black" />
+            </View>
+          )
         }}
       >
         <Stack.Screen name="index" />
-        <Stack.Screen name="signup" />
+        <Stack.Screen name="signin" />
+        <Stack.Screen name="capture_screen" />
       </Stack>
     </ThemeProvider>
   );

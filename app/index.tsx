@@ -4,29 +4,12 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { e_voting_green } from '@/constants/Colors';
 import { Link } from 'expo-router';
 import { images } from '@/constants/images';
-import * as Font from 'expo-font';
-import lora_font from "../assets/fonts/Lora-Bold.ttf";
-import { useEffect, useState } from 'react';
-import { safe_area_styles } from '@/constants/safe-area_styles';
+import { utils_styles } from '@/constants/utils_styles';
+import use_font from '@/hooks/fonts';
 
 export default function Welcome() {
 
-    // Google Fonts
-    const [font_loaded, setFont_loaded] = useState(false);
-
-    useEffect(() => {
-        // Load the custom font
-        const loadFont = async () => {
-            await Font.loadAsync({
-                'lora-bold': lora_font,
-            });
-            setFont_loaded(true);
-        };
-
-        if (!font_loaded) {
-            loadFont();
-        }
-    }, [])
+    const { } = use_font();
 
     return (
         <SafeAreaView style={styles.safe_area}>
@@ -38,7 +21,7 @@ export default function Welcome() {
                         <Text>Accessibility . Securit y. Accuracy</Text>
                     </View>
 
-                    <Link href={'/signin'} style={{ ...styles.cta_btn, fontFamily: 'lora-bold' }} push>Get started</Link>
+                    <Link href={'/capture_screen'} style={{ ...styles.cta_btn, fontFamily: 'lora-bold' }} push>Get started</Link>
                 </View>
 
                 <Image style={styles.tetfund_frame_style} source={images.tetfund_frame} />
@@ -46,6 +29,8 @@ export default function Welcome() {
         </SafeAreaView>
     );
 }
+
+const { safe_area_styles } = utils_styles;
 
 const styles = StyleSheet.create({
     safe_area: safe_area_styles as ViewStyle,

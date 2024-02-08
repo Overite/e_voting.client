@@ -19,6 +19,7 @@ import use_layout_selector from '@/hooks/state/use_layout_selector';
 import { images } from '@/constants/images';
 import { utils_styles } from '@/constants/utils_styles';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 
 
 export {
@@ -90,7 +91,7 @@ const TetfundFrame = () => {
   return <Image style={tetfund_frame_style} source={images.tetfund_frame} />
 }
 
-const DashboardRightHeader = () => {
+const RightHeaderComponent = () => {
 
   const dispatch = useAppDispatch();
   const { right_menu_shown } = use_layout_selector();
@@ -134,7 +135,6 @@ const SideBar = () => {
   return <View style={{ position: 'absolute', top: 0, left: side_bar_shown ? 0 : '-100%', zIndex: 1000, backgroundColor: 'white', }}>
     {side_bar_shown && <View style={{
       width: 228, height: '100%',
-      // marginTop: -25,
       display: 'flex',
       gap: 5,
       paddingVertical: 10
@@ -169,24 +169,24 @@ const SideBar = () => {
           <Text style={{ fontSize: 20, fontWeight: '800', color: 'white' }}>Dashboard</Text>
         </View>
 
-        <View style={{ width: '100%', height: 'auto', display: 'flex', flexDirection: 'row', gap: 12, alignItems: 'center', padding: 10, backgroundColor: e_voting_green, borderBottomRightRadius: 40 }}>
-          <MaterialCommunityIcons name="view-grid-outline" size={24} color="white" />
-          <Text style={{ fontSize: 20, fontWeight: '800', color: 'white' }}>Register voter</Text>
+        <View style={{ width: '100%', height: 'auto', display: 'flex', flexDirection: 'row', gap: 12, alignItems: 'center', padding: 10, backgroundColor: 'white', borderBottomRightRadius: 40 }}>
+          <MaterialCommunityIcons name="account-plus-outline" size={24} color="black" />
+          <Text style={{ fontSize: 20, fontWeight: '800', color: 'black' }}>Register voter</Text>
         </View>
 
-        <View style={{ width: '100%', height: 'auto', display: 'flex', flexDirection: 'row', gap: 12, alignItems: 'center', padding: 10, backgroundColor: e_voting_green, borderBottomRightRadius: 40 }}>
-          <MaterialCommunityIcons name="view-grid-outline" size={24} color="white" />
-          <Text style={{ fontSize: 20, fontWeight: '800', color: 'white' }}>Authenticate voter</Text>
+        <View style={{ width: '100%', height: 'auto', display: 'flex', flexDirection: 'row', gap: 12, alignItems: 'center', padding: 10, backgroundColor: 'white', borderBottomRightRadius: 40 }}>
+          <Entypo name="fingerprint" size={24} color="black" />
+          <Text style={{ fontSize: 20, fontWeight: '800', color: 'black' }}>Authenticate voter</Text>
         </View>
 
-        <View style={{ width: '100%', height: 'auto', display: 'flex', flexDirection: 'row', gap: 12, alignItems: 'center', padding: 10, backgroundColor: e_voting_green, borderBottomRightRadius: 40 }}>
-          <MaterialCommunityIcons name="view-grid-outline" size={24} color="white" />
-          <Text style={{ fontSize: 20, fontWeight: '800', color: 'white' }}>recover wallet</Text>
+        <View style={{ width: '100%', height: 'auto', display: 'flex', flexDirection: 'row', gap: 12, alignItems: 'center', padding: 10, backgroundColor: 'white', borderBottomRightRadius: 40 }}>
+          <Ionicons name="wallet-outline" size={24} color="black" />
+          <Text style={{ fontSize: 20, fontWeight: '800', color: 'black' }}>recover wallet</Text>
         </View>
 
-        <View style={{ width: '100%', height: 'auto', display: 'flex', flexDirection: 'row', gap: 12, alignItems: 'center', padding: 10, backgroundColor: e_voting_green, borderBottomRightRadius: 40 }}>
-          <MaterialCommunityIcons name="view-grid-outline" size={24} color="white" />
-          <Text style={{ fontSize: 20, fontWeight: '800', color: 'white' }}>Logout</Text>
+        <View style={{ width: '100%', height: 'auto', display: 'flex', flexDirection: 'row', gap: 12, alignItems: 'center', padding: 10, backgroundColor: 'white', borderBottomRightRadius: 40 }}>
+          <MaterialIcons name="logout" size={24} color="black" />
+          <Text style={{ fontSize: 20, fontWeight: '800', color: 'black' }}>Logout</Text>
         </View>
       </View>
       {/* Body */}
@@ -202,7 +202,7 @@ function RootLayoutNav() {
   return (
     <Provider store={store}>
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-        <Stack initialRouteName="dashboard"
+        <Stack initialRouteName="register_voters"
           screenOptions={{
             headerStyle: {
               backgroundColor: e_voting_green,
@@ -224,12 +224,22 @@ function RootLayoutNav() {
           }} />
           <Stack.Screen name="dashboard" options={{
             headerLeft: () => <LeftHeaderComponent />,
-            headerRight: () => <DashboardRightHeader />,
+            headerRight: () => <RightHeaderComponent />,
             headerTitle: '',
             headerStyle: {
               backgroundColor: e_voting_green,
             }
           }} />
+
+          <Stack.Screen name="register_voters" options={{
+            headerLeft: () => <LeftHeaderComponent />,
+            headerRight: () => <RightHeaderComponent />,
+            headerTitle: '',
+            headerStyle: {
+              backgroundColor: e_voting_green,
+            }
+          }} />
+
         </Stack>
       </ThemeProvider>
     </Provider>
@@ -237,4 +247,4 @@ function RootLayoutNav() {
 }
 
 
-export { RightHeaderDropDown, TetfundFrame, DashboardRightHeader, SideBar }
+export { RightHeaderDropDown, TetfundFrame, SideBar }

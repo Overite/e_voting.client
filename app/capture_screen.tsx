@@ -54,7 +54,7 @@ function capture_screen() {
 
 export default capture_screen;
 
-const { disabled_cta_btn, safe_area_styles, capture_btn, tetfund_frame_style } = utils_styles;
+const { disabled_cta_btn, safe_area_styles, btn, tetfund_frame_style } = utils_styles;
 
 const styles = StyleSheet.create({
     safe_area_styles,
@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         backgroundColor: 'transparent'
     },
-    capture_btn: capture_btn as ViewStyle,
+    capture_btn: btn,
     disabled_cta_btn,
     tetfund_frame_style: tetfund_frame_style as ImageStyle
 })

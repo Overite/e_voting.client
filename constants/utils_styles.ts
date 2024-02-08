@@ -2,7 +2,7 @@ import { ImageStyle, ViewStyle } from "react-native";
 import { e_voting_green } from "./Colors";
 
 const utils_styles = {
-        capture_btn: {
+        btn: {
         width: '100%',
         height: 42,
         paddingVertical: 10,
@@ -11,7 +11,7 @@ const utils_styles = {
         backgroundColor: e_voting_green,
         color: 'white',
         fontFamily: 'lora-bold'
-    },
+    } as ViewStyle,
         disabled_cta_btn: {
         opacity: 0.6
         },

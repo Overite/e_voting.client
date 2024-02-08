@@ -7,16 +7,19 @@ import { useEffect } from 'react';
 import { useColorScheme } from '@/components/useColorScheme';
 import { MaterialIcons } from '@expo/vector-icons';
 import { e_voting_green } from '@/constants/Colors';
-import { TouchableOpacity } from 'react-native';
+import { TouchableOpacity, Image } from 'react-native';
 import { View, Text } from '@/components/Themed';
 import use_ubuntu_font from '@/hooks/fonts/ubuntu_medium_font';
 import { Entypo } from '@expo/vector-icons';
 import { useAppDispatch } from '@/hooks/state/use_base_hooks';
-import { toggle_right_menu_shown } from '@/state/slices/layout_slice';
+import { toggle_right_menu_shown, toggle_side_bar_shown } from '@/state/slices/layout_slice';
 import { Provider } from 'react-redux';
 import { store } from '@/state/store';
 import use_layout_selector from '@/hooks/state/use_layout_selector';
-import { transform } from '@babel/core';
+import { images } from '@/constants/images';
+import { utils_styles } from '@/constants/utils_styles';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -55,6 +58,38 @@ export default function RootLayout() {
   return <RootLayoutNav />;
 }
 
+const RightHeaderDropDown = () => {
+
+  const { right_menu_shown } = use_layout_selector();
+
+
+  return <View style={{
+    position: 'absolute',
+    top: 0, right: 0, zIndex: 10,
+    width: right_menu_shown ? 'auto' : 0, height: right_menu_shown ? 'auto' : 0,
+    backgroundColor: 'white',
+    padding: right_menu_shown ? 10 : 0,
+    borderColor: 'lightgray',
+    borderWidth: 1,
+    display: 'flex',
+    flexDirection: 'row',
+    gap: 10,
+    alignItems: 'center'
+  }}>
+    <View style={{ width: 20, height: 20 }}>
+      <Image style={{ width: '100%', height: '100%', objectFit: 'cover' }} source={images.metat_mask} />
+    </View>
+
+    <Text>connect to meta mask</Text>
+  </View>
+}
+
+const TetfundFrame = () => {
+  const { tetfund_frame_style } = utils_styles;
+
+  return <Image style={tetfund_frame_style} source={images.tetfund_frame} />
+}
+
 const DashboardRightHeader = () => {
 
   const dispatch = useAppDispatch();
@@ -75,9 +110,94 @@ const DashboardRightHeader = () => {
   </View>
 }
 
+const LeftHeaderComponent = () => {
+  const dispatch = useAppDispatch();
+
+  const toggle_sidebar = () => {
+    dispatch(toggle_side_bar_shown())
+  }
+
+
+  return <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 10, backgroundColor: 'transport' }}>
+    <TouchableOpacity onPress={() => toggle_sidebar()} style={{ backgroundColor: 'transarent' }}>
+      <MaterialIcons name="menu" size={24} color="white" />
+    </TouchableOpacity>
+
+    <Text style={{ color: 'white', fontWeight: '600', fontSize: 25, fontFamily: 'Ubuntu-Medium' }}>Dashboard</Text>
+  </View>
+}
+
+const SideBar = () => {
+  const { side_bar_shown } = use_layout_selector();
+  const { } = use_ubuntu_font();
+
+  return <View style={{ position: 'absolute', top: 0, left: side_bar_shown ? 0 : '-100%', zIndex: 1000, backgroundColor: 'white', }}>
+    {side_bar_shown && <View style={{
+      width: 228, height: '100%',
+      // marginTop: -25,
+      display: 'flex',
+      gap: 5,
+      paddingVertical: 10
+    }}>
+      {/* Header */}
+      <View style={{
+        width: '100%',
+        height: 'auto',
+        borderBottomColor: e_voting_green,
+        borderBottomWidth: 1,
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 10,
+        alignItems: 'flex-start',
+        padding: 20,
+      }}>
+        <View style={{ width: 50, height: 50, borderRadius: 50, borderColor: e_voting_green, borderWidth: 1, overflow: 'hidden' }}>
+          <Image source={images.metat_mask} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+        </View>
+
+        <View style={{ width: '100%', height: 'auto' }}>
+          <Text style={{ fontSize: 20, fontWeight: '800', color: 'black', fontFamily: 'Ubuntu-Medium', }}>Admnistarator</Text>
+          <Text style={{ textTransform: 'uppercase', color: e_voting_green, fontSize: 18, fontWeight: '700', fontFamily: 'Ubuntu-Medium', }}>565sr</Text>
+        </View>
+      </View>
+      {/* Header */}
+
+      {/* Body */}
+      <View style={{ width: '100%', height: 'auto', padding: 20, display: 'flex', gap: 30, flexDirection: 'column', }}>
+        <View style={{ width: '100%', height: 'auto', display: 'flex', flexDirection: 'row', gap: 12, alignItems: 'center', padding: 10, backgroundColor: e_voting_green, borderBottomRightRadius: 40 }}>
+          <MaterialCommunityIcons name="view-grid-outline" size={24} color="white" />
+          <Text style={{ fontSize: 20, fontWeight: '800', color: 'white' }}>Dashboard</Text>
+        </View>
+
+        <View style={{ width: '100%', height: 'auto', display: 'flex', flexDirection: 'row', gap: 12, alignItems: 'center', padding: 10, backgroundColor: e_voting_green, borderBottomRightRadius: 40 }}>
+          <MaterialCommunityIcons name="view-grid-outline" size={24} color="white" />
+          <Text style={{ fontSize: 20, fontWeight: '800', color: 'white' }}>Register voter</Text>
+        </View>
+
+        <View style={{ width: '100%', height: 'auto', display: 'flex', flexDirection: 'row', gap: 12, alignItems: 'center', padding: 10, backgroundColor: e_voting_green, borderBottomRightRadius: 40 }}>
+          <MaterialCommunityIcons name="view-grid-outline" size={24} color="white" />
+          <Text style={{ fontSize: 20, fontWeight: '800', color: 'white' }}>Authenticate voter</Text>
+        </View>
+
+        <View style={{ width: '100%', height: 'auto', display: 'flex', flexDirection: 'row', gap: 12, alignItems: 'center', padding: 10, backgroundColor: e_voting_green, borderBottomRightRadius: 40 }}>
+          <MaterialCommunityIcons name="view-grid-outline" size={24} color="white" />
+          <Text style={{ fontSize: 20, fontWeight: '800', color: 'white' }}>recover wallet</Text>
+        </View>
+
+        <View style={{ width: '100%', height: 'auto', display: 'flex', flexDirection: 'row', gap: 12, alignItems: 'center', padding: 10, backgroundColor: e_voting_green, borderBottomRightRadius: 40 }}>
+          <MaterialCommunityIcons name="view-grid-outline" size={24} color="white" />
+          <Text style={{ fontSize: 20, fontWeight: '800', color: 'white' }}>Logout</Text>
+        </View>
+      </View>
+      {/* Body */}
+    </View>}
+  </View>
+}
+
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
   const { } = use_ubuntu_font();
+
 
   return (
     <Provider store={store}>
@@ -103,16 +223,8 @@ function RootLayoutNav() {
             }
           }} />
           <Stack.Screen name="dashboard" options={{
-            headerLeft: () =>
-              <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 10, backgroundColor: 'transport' }}>
-                <TouchableOpacity style={{ backgroundColor: 'transarent' }}>
-                  <MaterialIcons name="menu" size={24} color="white" />
-                </TouchableOpacity>
-
-                <Text style={{ color: 'white', fontWeight: '600', fontSize: 25, fontFamily: 'Ubuntu-Medium' }}>Dashboard</Text>
-              </View>,
-            headerRight: () => <DashboardRightHeader />
-            ,
+            headerLeft: () => <LeftHeaderComponent />,
+            headerRight: () => <DashboardRightHeader />,
             headerTitle: '',
             headerStyle: {
               backgroundColor: e_voting_green,
@@ -123,3 +235,6 @@ function RootLayoutNav() {
     </Provider>
   );
 }
+
+
+export { RightHeaderDropDown, TetfundFrame, DashboardRightHeader, SideBar }

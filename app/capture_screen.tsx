@@ -8,13 +8,14 @@ import { FontAwesome6 } from '@expo/vector-icons';
 import { e_voting_green } from "@/constants/Colors";
 import { useState } from "react";
 import use_lora_font from "@/hooks/fonts/lora_font";
+import { TetfundFrame } from "./_layout";
 
 function capture_screen() {
     const { } = use_lora_font();
     const [img_captured, set_img_captured] = useState(true);
 
     return (
-        <SafeAreaView style={styles.safe_area}>
+        <SafeAreaView style={styles.safe_area_styles}>
             <View style={styles.container}>
                 <View style={styles.logo_block}>
                     <Image source={images.evs} />
@@ -46,7 +47,7 @@ function capture_screen() {
                 <Text style={styles.capture_btn}>Capture</Text>
             </View>
 
-            <Image style={styles.tetfund_frame_style} source={images.tetfund_frame} />
+            <TetfundFrame />
         </SafeAreaView>
     )
 }
@@ -56,7 +57,7 @@ export default capture_screen;
 const { disabled_cta_btn, safe_area_styles, capture_btn, tetfund_frame_style } = utils_styles;
 
 const styles = StyleSheet.create({
-    safe_area: safe_area_styles as ViewStyle,
+    safe_area_styles,
     container: {
         width: 366,
         height: 462.5,

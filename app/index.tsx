@@ -6,13 +6,14 @@ import { Link } from 'expo-router';
 import { images } from '@/constants/images';
 import { utils_styles } from '@/constants/utils_styles';
 import use_lora_font from '@/hooks/fonts/lora_font';
+import { TetfundFrame } from './_layout';
 
 export default function Welcome() {
 
     const { } = use_lora_font();
 
     return (
-        <SafeAreaView style={styles.safe_area}>
+        <SafeAreaView style={styles.safe_area_styles}>
             <View style={styles.container}>
                 <View style={styles.main}>
                     <View style={styles.logo_block}>
@@ -24,7 +25,7 @@ export default function Welcome() {
                     <Link href={'/'} style={{ ...styles.cta_btn, fontFamily: 'lora-bold' }} push>Get started</Link>
                 </View>
 
-                <Image style={styles.tetfund_frame_style} source={images.tetfund_frame} />
+                <TetfundFrame />
             </View>
         </SafeAreaView>
     );
@@ -33,7 +34,7 @@ export default function Welcome() {
 const { safe_area_styles, tetfund_frame_style } = utils_styles;
 
 const styles = StyleSheet.create({
-    safe_area: safe_area_styles as ViewStyle,
+    safe_area_styles,
     container: {
         alignItems: 'center',
         justifyContent: 'center',

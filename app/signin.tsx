@@ -9,6 +9,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useState } from "react";
 import { Feather } from '@expo/vector-icons';
 import use_lora_font from "@/hooks/fonts/lora_font";
+import { TetfundFrame } from "./_layout";
 
 function signin() {
     const { } = use_lora_font();
@@ -30,7 +31,7 @@ function signin() {
 
 
     return (
-        <SafeAreaView style={styles.safe_area}>
+        <SafeAreaView style={styles.safe_area_styles}>
             <View style={styles.container}>
                 <View style={styles.logo_block}>
                     <Image source={images.evs} />
@@ -56,7 +57,7 @@ function signin() {
                 </View>
 
             </View>
-            <Image style={styles.tetfund_frame_style} source={images.tetfund_frame} />
+            <TetfundFrame />
         </SafeAreaView>
     )
 }
@@ -66,7 +67,7 @@ export default signin;
 const { disabled_cta_btn, safe_area_styles, capture_btn } = utils_styles;
 
 const styles = StyleSheet.create({
-    safe_area: safe_area_styles as ViewStyle,
+    safe_area_styles,
     container: {
         width: 366,
         height: 460,

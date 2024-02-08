@@ -1,3 +1,4 @@
+import { ImageStyle, ViewStyle } from "react-native";
 import { e_voting_green } from "./Colors";
 
 const utils_styles = {
@@ -17,13 +18,14 @@ const utils_styles = {
         safe_area_styles: {
         backgroundColor: 'white',
         width: '100%',
-        height: '100%'
-    },
+        height: '100%',
+        position: 'relative'
+    } as ViewStyle,
          tetfund_frame_style: {
         position: 'absolute',
         bottom: 10,
         right: 10
-    }
+    } as ImageStyle
 
 }
     

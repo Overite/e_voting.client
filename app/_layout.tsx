@@ -1,7 +1,7 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
+import { Stack, router } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import { useColorScheme } from '@/components/useColorScheme';
@@ -12,7 +12,6 @@ import { View, Text } from '@/components/Themed';
 import use_ubuntu_font from '@/hooks/fonts/ubuntu_medium_font';
 import { Entypo } from '@expo/vector-icons';
 import { useAppDispatch } from '@/hooks/state/use_base_hooks';
-import { toggle_right_menu_shown, toggle_side_bar_shown } from '@/state/slices/layout_slice';
 import { Provider } from 'react-redux';
 import { store } from '@/state/store';
 import use_layout_selector from '@/hooks/state/use_layout_selector';
@@ -20,6 +19,7 @@ import { images } from '@/constants/images';
 import { utils_styles } from '@/constants/utils_styles';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
+import { toggle_right_menu_shown, toggle_side_bar_shown } from '@/state/slices/layout_slice';
 
 
 export {
@@ -125,7 +125,7 @@ const LeftHeaderComponent = ({ btn, title }: { btn: 'back_btn' | 'hamburger_btn'
         <MaterialIcons name="menu" size={24} color="white" />
       </TouchableOpacity>)
       :
-      (<TouchableOpacity onPress={() => { }} style={{ backgroundColor: 'transarent' }}>
+      (<TouchableOpacity onPress={() => router.back()} style={{ backgroundColor: 'transarent' }}>
         <MaterialIcons style={{ backgroundColor: 'transparent' }} name="keyboard-backspace" size={24} color="white" />
       </TouchableOpacity>)}
 
@@ -136,69 +136,76 @@ const LeftHeaderComponent = ({ btn, title }: { btn: 'back_btn' | 'hamburger_btn'
 const SideBar = () => {
   const { side_bar_shown } = use_layout_selector();
   const { } = use_ubuntu_font();
+  const dispatch = useAppDispatch();
 
-  return <View style={{
-    position: 'absolute', top: 0, bottom: 0, left: side_bar_shown ? 0 : '-100%', zIndex: 1000, backgroundColor: 'white', borderRightColor: 'lightgray', borderRightWidth: 1, width: 228,
+  const toggle_side_bar = () => {
+    dispatch(toggle_side_bar_shown());
+  }
+
+  return <TouchableOpacity onPress={() => toggle_side_bar()} style={{
+    position: 'absolute', top: 0, bottom: 0, left: 0, width: side_bar_shown ? '100%' : 0, zIndex: 1000, backgroundColor: 'transparent', borderRightColor: 'lightgray', borderRightWidth: 1,
   }}>
-    {side_bar_shown && <View style={{
-      width: '100%', height: '100%',
-      display: 'flex',
-      gap: 5,
-      paddingVertical: 10
-    }}>
-      {/* Header */}
-      <View style={{
-        width: '100%',
-        height: 'auto',
-        borderBottomColor: e_voting_green,
-        borderBottomWidth: 1,
+    <View style={{ position: 'absolute', top: 0, bottom: 0, left: side_bar_shown ? 0 : '-100%', zIndex: 10000, }}>
+      {side_bar_shown && <View style={{
+        width: '100%', height: '100%',
         display: 'flex',
-        flexDirection: 'column',
-        gap: 10,
-        alignItems: 'flex-start',
-        padding: 20,
+        gap: 5,
+        paddingVertical: 10
       }}>
-        <View style={{ width: 50, height: 50, borderRadius: 50, borderColor: e_voting_green, borderWidth: 1, overflow: 'hidden' }}>
-          <Image source={images.metat_mask} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-        </View>
+        {/* Header */}
+        <View style={{
+          width: '100%',
+          height: 'auto',
+          borderBottomColor: e_voting_green,
+          borderBottomWidth: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 10,
+          alignItems: 'flex-start',
+          padding: 20,
+        }}>
+          <View style={{ width: 50, height: 50, borderRadius: 50, borderColor: e_voting_green, borderWidth: 1, overflow: 'hidden' }}>
+            <Image source={images.metat_mask} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          </View>
 
-        <View style={{ width: '100%', height: 'auto' }}>
-          <Text style={{ fontSize: 20, fontWeight: '800', color: 'black', fontFamily: 'Ubuntu-Medium', }}>Admnistarator</Text>
-          <Text style={{ textTransform: 'uppercase', color: e_voting_green, fontSize: 18, fontWeight: '700', fontFamily: 'Ubuntu-Medium', }}>565sr</Text>
+          <View style={{ width: '100%', height: 'auto' }}>
+            <Text style={{ fontSize: 20, fontWeight: '800', color: 'black', fontFamily: 'Ubuntu-Medium', }}>Admnistarator</Text>
+            <Text style={{ textTransform: 'uppercase', color: e_voting_green, fontSize: 18, fontWeight: '700', fontFamily: 'Ubuntu-Medium', }}>565sr</Text>
+          </View>
         </View>
-      </View>
-      {/* Header */}
+        {/* Header */}
 
-      {/* Body */}
-      <View style={{ width: '100%', height: 'auto', padding: 20, display: 'flex', gap: 30, flexDirection: 'column', }}>
-        <View style={{ width: '100%', height: 'auto', display: 'flex', flexDirection: 'row', gap: 12, alignItems: 'center', padding: 10, backgroundColor: e_voting_green, borderBottomRightRadius: 40 }}>
-          <MaterialCommunityIcons name="view-grid-outline" size={24} color="white" />
-          <Text style={{ fontSize: 20, fontWeight: '800', color: 'white' }}>Dashboard</Text>
-        </View>
+        {/* Body */}
+        <View style={{ width: '100%', height: 'auto', padding: 20, display: 'flex', gap: 30, flexDirection: 'column', }}>
+          <View style={{ width: '100%', height: 'auto', display: 'flex', flexDirection: 'row', gap: 12, alignItems: 'center', padding: 10, backgroundColor: e_voting_green, borderBottomRightRadius: 40 }}>
+            <MaterialCommunityIcons name="view-grid-outline" size={24} color="white" />
+            <Text style={{ fontSize: 20, fontWeight: '800', color: 'white' }}>Dashboard</Text>
+          </View>
 
-        <View style={{ width: '100%', height: 'auto', display: 'flex', flexDirection: 'row', gap: 12, alignItems: 'center', padding: 10, backgroundColor: 'white', borderBottomRightRadius: 40 }}>
-          <MaterialCommunityIcons name="account-plus-outline" size={24} color="black" />
-          <Text style={{ fontSize: 20, fontWeight: '800', color: 'black' }}>Register voter</Text>
-        </View>
+          <View style={{ width: '100%', height: 'auto', display: 'flex', flexDirection: 'row', gap: 12, alignItems: 'center', padding: 10, backgroundColor: 'white', borderBottomRightRadius: 40 }}>
+            <MaterialCommunityIcons name="account-plus-outline" size={24} color="black" />
+            <Text style={{ fontSize: 20, fontWeight: '800', color: 'black' }}>Register voter</Text>
+          </View>
 
-        <View style={{ width: '100%', height: 'auto', display: 'flex', flexDirection: 'row', gap: 12, alignItems: 'center', padding: 10, backgroundColor: 'white', borderBottomRightRadius: 40 }}>
-          <Entypo name="fingerprint" size={24} color="black" />
-          <Text style={{ fontSize: 20, fontWeight: '800', color: 'black' }}>Authenticate voter</Text>
-        </View>
+          <View style={{ width: '100%', height: 'auto', display: 'flex', flexDirection: 'row', gap: 12, alignItems: 'center', padding: 10, backgroundColor: 'white', borderBottomRightRadius: 40 }}>
+            <Entypo name="fingerprint" size={24} color="black" />
+            <Text style={{ fontSize: 20, fontWeight: '800', color: 'black' }}>Authenticate voter</Text>
+          </View>
 
-        <View style={{ width: '100%', height: 'auto', display: 'flex', flexDirection: 'row', gap: 12, alignItems: 'center', padding: 10, backgroundColor: 'white', borderBottomRightRadius: 40 }}>
-          <Ionicons name="wallet-outline" size={24} color="black" />
-          <Text style={{ fontSize: 20, fontWeight: '800', color: 'black' }}>recover wallet</Text>
-        </View>
+          <View style={{ width: '100%', height: 'auto', display: 'flex', flexDirection: 'row', gap: 12, alignItems: 'center', padding: 10, backgroundColor: 'white', borderBottomRightRadius: 40 }}>
+            <Ionicons name="wallet-outline" size={24} color="black" />
+            <Text style={{ fontSize: 20, fontWeight: '800', color: 'black' }}>recover wallet</Text>
+          </View>
 
-        <View style={{ width: '100%', height: 'auto', display: 'flex', flexDirection: 'row', gap: 12, alignItems: 'center', padding: 10, backgroundColor: 'white', borderBottomRightRadius: 40 }}>
-          <MaterialIcons name="logout" size={24} color="black" />
-          <Text style={{ fontSize: 20, fontWeight: '800', color: 'black' }}>Logout</Text>
+          <View style={{ width: '100%', height: 'auto', display: 'flex', flexDirection: 'row', gap: 12, alignItems: 'center', padding: 10, backgroundColor: 'white', borderBottomRightRadius: 40 }}>
+            <MaterialIcons name="logout" size={24} color="black" />
+            <Text style={{ fontSize: 20, fontWeight: '800', color: 'black' }}>Logout</Text>
+          </View>
         </View>
-      </View>
-      {/* Body */}
-    </View>}
-  </View>
+        {/* Body */}
+      </View>}
+    </View>
+  </TouchableOpacity>
 }
 
 function RootLayoutNav() {
@@ -209,7 +216,7 @@ function RootLayoutNav() {
   return (
     <Provider store={store}>
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-        <Stack initialRouteName="search_registered_voters"
+        <Stack initialRouteName="index"
           screenOptions={{
             headerStyle: {
               backgroundColor: e_voting_green,
@@ -248,7 +255,16 @@ function RootLayoutNav() {
           }} />
 
           <Stack.Screen name="search_registered_voters" options={{
-            headerLeft: () => <LeftHeaderComponent title='Register voters' btn='hamburger_btn' />,
+            headerLeft: () => <LeftHeaderComponent title='Register voters' btn='back_btn' />,
+            headerRight: () => <RightHeaderComponent />,
+            headerTitle: '',
+            headerStyle: {
+              backgroundColor: e_voting_green,
+            }
+          }} />
+
+          <Stack.Screen name='[user_id]' options={{
+            headerLeft: () => <LeftHeaderComponent title='Register voters' btn='back_btn' />,
             headerRight: () => <RightHeaderComponent />,
             headerTitle: '',
             headerStyle: {

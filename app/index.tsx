@@ -22,7 +22,7 @@ export default function Welcome() {
                         <Text>Accessibility . Securit y. Accuracy</Text>
                     </View>
 
-                    <Link href={'/'} style={{ ...styles.cta_btn, fontFamily: 'lora-bold' }} push>Get started</Link>
+                    <Link href={'/search_registered_voters'} style={{ ...styles.cta_btn, fontFamily: 'lora-bold' }} push>Get started</Link>
                 </View>
 
                 <TetfundFrame />

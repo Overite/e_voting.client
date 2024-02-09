@@ -132,9 +132,11 @@ const SideBar = () => {
   const { side_bar_shown } = use_layout_selector();
   const { } = use_ubuntu_font();
 
-  return <View style={{ position: 'absolute', top: 0, left: side_bar_shown ? 0 : '-100%', zIndex: 1000, backgroundColor: 'white', }}>
+  return <View style={{
+    position: 'absolute', top: 0, bottom: 0, left: side_bar_shown ? 0 : '-100%', zIndex: 1000, backgroundColor: 'white', borderRightColor: 'lightgray', borderRightWidth: 1, width: 228,
+  }}>
     {side_bar_shown && <View style={{
-      width: 228, height: '100%',
+      width: '100%', height: '100%',
       display: 'flex',
       gap: 5,
       paddingVertical: 10
@@ -202,7 +204,7 @@ function RootLayoutNav() {
   return (
     <Provider store={store}>
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-        <Stack initialRouteName="register_voters"
+        <Stack initialRouteName="dashboard"
           screenOptions={{
             headerStyle: {
               backgroundColor: e_voting_green,

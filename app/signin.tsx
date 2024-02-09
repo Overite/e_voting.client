@@ -64,7 +64,7 @@ function signin() {
 
 export default signin;
 
-const { disabled_cta_btn, safe_area_styles, capture_btn } = utils_styles;
+const { disabled_cta_btn, safe_area_styles, btn } = utils_styles;
 
 const styles = StyleSheet.create({
     safe_area_styles,
@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
         color: 'lightgray',
         fontSize: 20,
     },
-    capture_btn: capture_btn as ViewStyle,
+    capture_btn: btn,
     disabled_cta_btn,
     tetfund_frame_style: {
         position: 'absolute',

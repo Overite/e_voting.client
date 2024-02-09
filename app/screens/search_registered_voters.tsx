@@ -2,17 +2,30 @@ import { View, Text } from "@/components/Themed";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { utils_styles } from "@/constants/utils_styles";
 import { Image, ImageSourcePropType, StyleSheet, TextInput, TouchableOpacity } from "react-native";
-import { RightHeaderDropDown, TetfundFrame } from "./_layout";
 import { EvilIcons } from '@expo/vector-icons';
 import { e_voting_green } from "@/constants/Colors";
 import use_ubuntu_font from "@/hooks/fonts/ubuntu_medium_font";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { images } from "@/constants/images";
-import { Link, router } from "expo-router";
+import { router, useNavigation } from "expo-router";
+import { LeftHeaderComponent, RightHeaderComponent } from "./_layout";
 
 function SearchRegisteredVoters() {
 
     const { } = use_ubuntu_font();
+    const navigation = useNavigation();
+
+    useEffect(() => {
+        navigation.setOptions({
+            headerLeft: () => <LeftHeaderComponent title='Register voters' btn='back_btn' />,
+            headerRight: () => <RightHeaderComponent />,
+            headerTitle: '',
+            headerStyle: {
+                backgroundColor: e_voting_green,
+            }
+        })
+    }, [navigation])
+
     const [search_results, set_search_results] = useState([
         {
             avatar: images.metat_mask,
@@ -27,36 +40,29 @@ function SearchRegisteredVoters() {
     ])
     const [typing, set_typing] = useState(false);
 
-    return <SafeAreaView style={safe_area_styles}>
-        <RightHeaderDropDown />
-
-        <View style={styles.container}>
-            <View style={styles.search_block}>
-                {!typing && <EvilIcons name="search" size={24} color="lightgray" />}
-                <TextInput style={styles.search_input} placeholder="Search" />
-            </View>
-
-            <Text style={styles.search_guide}>Search with Surname or voters identification number</Text>
-
-            <View style={styles.search_results_container}>
-                {search_results.map((user, index) => (
-                    <TouchableOpacity onPress={() => router.push(`/${user.name}`)} style={styles.search_result} key={index}>
-                        <View style={styles.avatar_block}>
-                            <Image style={styles.avatar} source={user.avatar as ImageSourcePropType} />
-                        </View>
-
-                        <View style={styles.text_block}>
-                            <Text style={styles.search_result_text}>{user.name}</Text>
-                            <Text style={styles.search_result_text}>{user.admin_number}</Text>
-                        </View>
-                    </TouchableOpacity>
-                ))}
-            </View>
+    return <View style={styles.container}>
+        <View style={styles.search_block}>
+            {!typing && <EvilIcons name="search" size={24} color="lightgray" />}
+            <TextInput style={styles.search_input} placeholder="Search" />
         </View>
 
-        <TetfundFrame />
-    </SafeAreaView>
+        <Text style={styles.search_guide}>Search with Surname or voters identification number</Text>
 
+        <View style={styles.search_results_container}>
+            {search_results.map((user, index) => (
+                <TouchableOpacity onPress={() => router.push(`/${user.name}` as `${string}:${string}`)} style={styles.search_result} key={index}>
+                    <View style={styles.avatar_block}>
+                        <Image style={styles.avatar} source={user.avatar as ImageSourcePropType} />
+                    </View>
+
+                    <View style={styles.text_block}>
+                        <Text style={styles.search_result_text}>{user.name}</Text>
+                        <Text style={styles.search_result_text}>{user.admin_number}</Text>
+                    </View>
+                </TouchableOpacity>
+            ))}
+        </View>
+    </View>
 }
 
 export default SearchRegisteredVoters;

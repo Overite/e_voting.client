@@ -2,15 +2,29 @@ import { Text, View } from "@/components/Themed";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Image, StyleSheet } from "react-native";
 import { utils_styles } from "@/constants/utils_styles";
-import { useLocalSearchParams } from "expo-router"
-import { RightHeaderDropDown, TetfundFrame } from "./_layout";
+import { useLocalSearchParams, useNavigation } from "expo-router"
+import { RightHeaderDropDown, LeftHeaderComponent, RightHeaderComponent, TetfundFrame } from "./_layout";
 import { images } from "@/constants/images";
 import { AntDesign } from '@expo/vector-icons';
 import use_ubuntu_font from "@/hooks/fonts/ubuntu_medium_font";
+import { useEffect } from "react";
+import { e_voting_green } from "@/constants/Colors";
 
 function UserDetails() {
     const { user_id } = useLocalSearchParams();
-    const { } = use_ubuntu_font()
+    const { } = use_ubuntu_font();
+    const navigation = useNavigation();
+
+    useEffect(() => {
+        navigation.setOptions({
+            headerLeft: () => <LeftHeaderComponent title='Register voters' btn='back_btn' />,
+            headerRight: () => <RightHeaderComponent />,
+            headerTitle: '',
+            headerStyle: {
+                backgroundColor: e_voting_green,
+            }
+        })
+    }, [navigation])
 
     const user_details = {
         avatar: images.metat_mask,

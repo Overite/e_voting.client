@@ -1,4 +1,4 @@
-import { StyleSheet, Image, Button, ViewStyle, ImageStyle } from 'react-native';
+import { StyleSheet, Image, ImageStyle } from 'react-native';
 import { Text, View } from '@/components/Themed';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { e_voting_green } from '@/constants/Colors';
@@ -6,7 +6,7 @@ import { Link } from 'expo-router';
 import { images } from '@/constants/images';
 import { utils_styles } from '@/constants/utils_styles';
 import use_lora_font from '@/hooks/fonts/lora_font';
-import { TetfundFrame } from './_layout';
+import { TetfundFrame } from './screens/_layout';
 
 export default function Welcome() {
 
@@ -22,7 +22,7 @@ export default function Welcome() {
                         <Text>Accessibility . Securit y. Accuracy</Text>
                     </View>
 
-                    <Link href={'/search_registered_voters'} style={{ ...styles.cta_btn, fontFamily: 'lora-bold' }} push>Get started</Link>
+                    <Link href={'/screens/register_voters'} style={{ ...styles.cta_btn, fontFamily: 'lora-bold' }} push>Get started</Link>
                 </View>
 
                 <TetfundFrame />

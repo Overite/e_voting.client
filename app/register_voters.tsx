@@ -6,9 +6,21 @@ import { RightHeaderDropDown, SideBar, TetfundFrame } from "./_layout";
 import { Fontisto } from '@expo/vector-icons';
 import { e_voting_green } from "@/constants/Colors";
 import use_ubuntu_font from "@/hooks/fonts/ubuntu_medium_font";
+import use_lora_font from "@/hooks/fonts/lora_font";
+import { useState } from "react";
+
+enum Mode {
+    manual = 'manual',
+    automatic = 'automatic'
+}
+
+type ModeType = Mode.automatic | Mode.manual;
 
 function RegisterVoters() {
     const { } = use_ubuntu_font();
+    const { } = use_lora_font();
+
+    const [mode, set_mode] = useState<ModeType>(Mode.manual);
 
 
     return <SafeAreaView style={safe_area_styles}>
@@ -21,13 +33,13 @@ function RegisterVoters() {
 
             <View style={styles.registration_options}>
                 <View style={styles.option_block}>
-                    <Fontisto name="radio-btn-active" size={24} color={e_voting_green} />
-                    <Text style={styles.option_text}>Manual</Text>
+                    {mode === Mode.manual ? (<Fontisto onPress={() => set_mode(Mode.manual)} name="radio-btn-active" size={24} color={e_voting_green} />) : (<Fontisto onPress={() => set_mode(Mode.manual)} name="radio-btn-passive" size={24} color={e_voting_green} />)}
+                    <Text onPress={() => set_mode(Mode.manual)} style={styles.option_text}>Manual</Text>
                 </View>
 
                 <View style={styles.option_block}>
-                    <Fontisto name="radio-btn-active" size={24} color={e_voting_green} />
-                    <Text style={styles.option_text}>Automatic</Text>
+                    {mode === Mode.automatic ? (<Fontisto onPress={() => set_mode(Mode.automatic)} name="radio-btn-active" size={24} color={e_voting_green} />) : (<Fontisto onPress={() => set_mode(Mode.automatic)} name="radio-btn-passive" size={24} color={e_voting_green} />)}
+                    <Text onPress={() => set_mode(Mode.automatic)} style={styles.option_text}>Automatic</Text>
                 </View>
             </View>
 
@@ -45,13 +57,13 @@ const styles = StyleSheet.create({
     safe_area_styles,
     container: {
         width: 366,
-        height: 'auto',
+        height: '20%',
         marginTop: 20,
         marginLeft: 'auto',
         marginRight: 'auto',
         display: 'flex',
         flexDirection: 'column',
-        gap: 30
+        gap: 30,
     },
     heading: {
         fontSize: 23,
@@ -76,5 +88,5 @@ const styles = StyleSheet.create({
         fontWeight: '400',
         color: 'black',
     },
-    continue_btn: { ...btn, marginTop: 12, backgroundColor: 'red' }
+    continue_btn: btn
 })

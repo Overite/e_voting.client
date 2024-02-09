@@ -111,7 +111,7 @@ const RightHeaderComponent = () => {
   </View>
 }
 
-const LeftHeaderComponent = () => {
+const LeftHeaderComponent = ({ btn, title }: { btn: 'back_btn' | 'hamburger_btn', title: string }) => {
   const dispatch = useAppDispatch();
 
   const toggle_sidebar = () => {
@@ -120,11 +120,16 @@ const LeftHeaderComponent = () => {
 
 
   return <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 10, backgroundColor: 'transport' }}>
-    <TouchableOpacity onPress={() => toggle_sidebar()} style={{ backgroundColor: 'transarent' }}>
-      <MaterialIcons name="menu" size={24} color="white" />
-    </TouchableOpacity>
+    {btn === 'hamburger_btn' ?
+      (<TouchableOpacity onPress={() => toggle_sidebar()} style={{ backgroundColor: 'transarent' }}>
+        <MaterialIcons name="menu" size={24} color="white" />
+      </TouchableOpacity>)
+      :
+      (<TouchableOpacity onPress={() => { }} style={{ backgroundColor: 'transarent' }}>
+        <MaterialIcons style={{ backgroundColor: 'transparent' }} name="keyboard-backspace" size={24} color="white" />
+      </TouchableOpacity>)}
 
-    <Text style={{ color: 'white', fontWeight: '600', fontSize: 25, fontFamily: 'Ubuntu-Medium' }}>Dashboard</Text>
+    <Text style={{ color: 'white', fontWeight: '600', fontSize: 25, fontFamily: 'Ubuntu-Medium' }}>{title}</Text>
   </View>
 }
 
@@ -204,7 +209,7 @@ function RootLayoutNav() {
   return (
     <Provider store={store}>
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-        <Stack initialRouteName="dashboard"
+        <Stack initialRouteName="search_registered_voters"
           screenOptions={{
             headerStyle: {
               backgroundColor: e_voting_green,
@@ -225,7 +230,7 @@ function RootLayoutNav() {
             }
           }} />
           <Stack.Screen name="dashboard" options={{
-            headerLeft: () => <LeftHeaderComponent />,
+            headerLeft: () => <LeftHeaderComponent title='dashboard' btn='hamburger_btn' />,
             headerRight: () => <RightHeaderComponent />,
             headerTitle: '',
             headerStyle: {
@@ -234,7 +239,16 @@ function RootLayoutNav() {
           }} />
 
           <Stack.Screen name="register_voters" options={{
-            headerLeft: () => <LeftHeaderComponent />,
+            headerLeft: () => <LeftHeaderComponent title='Register voters' btn='hamburger_btn' />,
+            headerRight: () => <RightHeaderComponent />,
+            headerTitle: '',
+            headerStyle: {
+              backgroundColor: e_voting_green,
+            }
+          }} />
+
+          <Stack.Screen name="search_registered_voters" options={{
+            headerLeft: () => <LeftHeaderComponent title='Register voters' btn='hamburger_btn' />,
             headerRight: () => <RightHeaderComponent />,
             headerTitle: '',
             headerStyle: {

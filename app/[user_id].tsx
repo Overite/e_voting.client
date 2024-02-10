@@ -101,12 +101,12 @@ const styles = StyleSheet.create({
     },
     parameter: {
         fontSize: 16,
-        fontWeight: '700',
+        fontWeight: '900',
         fontFamily: 'Ubuntu-Medium'
     },
     value: {
         fontSize: 14,
-        fontWeight: '500',
+        fontWeight: '300',
         fontFamily: 'Ubuntu-Medium'
     },
     btn

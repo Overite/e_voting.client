@@ -1,7 +1,7 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
-import { Stack, router, useNavigation } from 'expo-router';
+import { Stack, router, useNavigation, usePathname } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect, useLayoutEffect } from 'react';
 import { useColorScheme } from '@/components/useColorScheme';
@@ -136,6 +136,7 @@ const SideBar = () => {
   const { } = use_ubuntu_font();
   const dispatch = useAppDispatch();
   const navigation = useNavigation();
+  const path = usePathname();
 
   const toggle_side_bar = () => {
     dispatch(toggle_side_bar_shown());
@@ -145,6 +146,11 @@ const SideBar = () => {
     dispatch(toggle_side_bar_shown());
     router.push(`/${where}` as `${string}:${string}`);
   }
+
+  const is_active = ({ link }: { link: string }) => {
+    return path == `/${link}`;
+  }
+
 
   return <TouchableOpacity onPress={() => toggle_side_bar()} style={{
     position: 'absolute', top: 0, bottom: 0, left: 0, width: side_bar_shown ? '100%' : 0, zIndex: 1000, backgroundColor: 'transparent', borderRightColor: 'lightgray', borderRightWidth: 1,
@@ -181,29 +187,29 @@ const SideBar = () => {
 
         {/* Body */}
         <View style={{ width: '100%', height: 'auto', padding: 20, display: 'flex', gap: 30, flexDirection: 'column', }}>
-          <TouchableOpacity onPress={() => go_to({ where: 'dashboard' })} style={{ width: '100%', height: 'auto', display: 'flex', flexDirection: 'row', gap: 12, alignItems: 'center', padding: 10, backgroundColor: e_voting_green, borderBottomRightRadius: 40 }}>
-            <MaterialCommunityIcons name="view-grid-outline" size={24} color="white" />
-            <Text style={{ fontSize: 20, fontWeight: '800', color: 'white' }}>Dashboard</Text>
+          <TouchableOpacity onPress={() => go_to({ where: 'dashboard' })} style={{ width: '100%', height: 'auto', display: 'flex', flexDirection: 'row', gap: 12, alignItems: 'center', padding: 10, backgroundColor: is_active({ link: 'dashboard' }) ? e_voting_green : 'white', borderBottomRightRadius: 40 }}>
+            <MaterialCommunityIcons name="view-grid-outline" size={24} color={is_active({ link: 'dashboard' }) ? 'white' : 'black'} />
+            <Text style={{ fontSize: 20, fontWeight: '800', color: is_active({ link: 'dashboard' }) ? 'white' : 'black' }}>Dashboard</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => go_to({ where: 'register_voters' })} style={{ width: '100%', height: 'auto', display: 'flex', flexDirection: 'row', gap: 12, alignItems: 'center', padding: 10, backgroundColor: 'white', borderBottomRightRadius: 40 }}>
-            <MaterialCommunityIcons name="account-plus-outline" size={24} color="black" />
-            <Text style={{ fontSize: 20, fontWeight: '800', color: 'black' }}>Register voter</Text>
+          <TouchableOpacity onPress={() => go_to({ where: 'register_voters' })} style={{ width: '100%', height: 'auto', display: 'flex', flexDirection: 'row', gap: 12, alignItems: 'center', padding: 10, backgroundColor: is_active({ link: 'register_voters' }) ? e_voting_green : 'white', borderBottomRightRadius: 40 }}>
+            <MaterialCommunityIcons name="account-plus-outline" size={24} color={is_active({ link: 'register_voters' }) ? 'white' : 'black'} />
+            <Text style={{ fontSize: 20, fontWeight: '800', color: is_active({ link: 'register_voters' }) ? 'white' : 'black' }}>Register voter</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => go_to({ where: '' })} style={{ width: '100%', height: 'auto', display: 'flex', flexDirection: 'row', gap: 12, alignItems: 'center', padding: 10, backgroundColor: 'white', borderBottomRightRadius: 40 }}>
-            <Entypo name="fingerprint" size={24} color="black" />
-            <Text style={{ fontSize: 20, fontWeight: '800', color: 'black' }}>Authenticate voter</Text>
+          <TouchableOpacity onPress={() => go_to({ where: '' })} style={{ width: '100%', height: 'auto', display: 'flex', flexDirection: 'row', gap: 12, alignItems: 'center', padding: 10, backgroundColor: is_active({ link: '' }) ? e_voting_green : 'white', borderBottomRightRadius: 40 }}>
+            <Entypo name="fingerprint" size={24} color={is_active({ link: '' }) ? 'white' : 'black'} />
+            <Text style={{ fontSize: 20, fontWeight: '800', color: is_active({ link: '' }) ? 'white' : 'black' }}>Authenticate voter</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => { }} style={{ width: '100%', height: 'auto', display: 'flex', flexDirection: 'row', gap: 12, alignItems: 'center', padding: 10, backgroundColor: 'white', borderBottomRightRadius: 40 }}>
-            <Ionicons name="wallet-outline" size={24} color="black" />
-            <Text style={{ fontSize: 20, fontWeight: '800', color: 'black' }}>recover wallet</Text>
+          <TouchableOpacity onPress={() => { }} style={{ width: '100%', height: 'auto', display: 'flex', flexDirection: 'row', gap: 12, alignItems: 'center', padding: 10, backgroundColor: is_active({ link: '' }) ? e_voting_green : 'white', borderBottomRightRadius: 40 }}>
+            <Ionicons name="wallet-outline" size={24} color={is_active({ link: '' }) ? 'white' : 'black'} />
+            <Text style={{ fontSize: 20, fontWeight: '800', color: is_active({ link: '' }) ? 'white' : 'black' }}>recover wallet</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => { }} style={{ width: '100%', height: 'auto', display: 'flex', flexDirection: 'row', gap: 12, alignItems: 'center', padding: 10, backgroundColor: 'white', borderBottomRightRadius: 40 }}>
-            <MaterialIcons name="logout" size={24} color="black" />
-            <Text style={{ fontSize: 20, fontWeight: '800', color: 'black' }}>Logout</Text>
+          <TouchableOpacity onPress={() => { }} style={{ width: '100%', height: 'auto', display: 'flex', flexDirection: 'row', gap: 12, alignItems: 'center', padding: 10, backgroundColor: is_active({ link: '' }) ? e_voting_green : 'white', borderBottomRightRadius: 40 }}>
+            <MaterialIcons name="logout" size={24} color={is_active({ link: '' }) ? 'white' : 'black'} />
+            <Text style={{ fontSize: 20, fontWeight: '800', color: is_active({ link: '' }) ? 'white' : 'black' }}>Logout</Text>
           </TouchableOpacity>
         </View>
         {/* Body */}

@@ -7,10 +7,10 @@ import { StyleSheet } from "react-native";
 import { utils_styles } from "@/constants/utils_styles";
 import { e_voting_green } from "@/constants/Colors";
 import use_ubuntu_font from "@/hooks/fonts/ubuntu_medium_font";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { useAppDispatch } from "@/hooks/state/use_base_hooks";
 import { toggle_side_bar_shown } from "@/state/slices/layout_slice";
-import { useNavigation } from "expo-router";
+import { router, useNavigation } from "expo-router";
 
 
 function Dashboard() {
@@ -19,46 +19,44 @@ function Dashboard() {
     const { } = use_ubuntu_font();
     const dispatch = useAppDispatch();
 
-    useEffect(() => {
-        navigation.setOptions({
-            headerLeft: () => <LeftHeaderComponent title='Dashboard' btn='hamburger_btn' />,
-            headerRight: () => <RightHeaderComponent />,
-            headerTitle: '',
-            headerStyle: {
-                backgroundColor: e_voting_green,
-            }
-        });
-    }, [navigation])
-
     const [activities, set_activities] = useState(['activity'])
     // const [activities, set_activities] = useState([]);
 
     return (
-        <View style={styles.container}>
-            <View style={styles.voters_block}>
-                <View style={styles.voters}>
-                    <Text style={styles.voters_heading}>Registered voters</Text>
-                    <Text style={styles.voters_sub_heading}>0</Text>
+        <SafeAreaView style={styles.safe_area_styles}>
+
+            <RightHeaderDropDown />
+
+            <SideBar />
+
+            <View style={styles.container}>
+                <View style={styles.voters_block}>
+                    <View style={styles.voters}>
+                        <Text style={styles.voters_heading}>Registered voters</Text>
+                        <Text style={styles.voters_sub_heading}>0</Text>
+                    </View>
+                    <View style={styles.voters}>
+                        <Text style={styles.voters_heading}>Total voters</Text>
+                        <Text style={styles.voters_sub_heading}>0</Text>
+                    </View>
                 </View>
-                <View style={styles.voters}>
-                    <Text style={styles.voters_heading}>Total voters</Text>
-                    <Text style={styles.voters_sub_heading}>0</Text>
+
+                <View style={styles.activity_block}>
+                    <Text style={styles.heading}>My activities</Text>
+
+                    <View style={styles.activities_container}>
+
+                        {activities.length > 0 ?
+                            (<Text style={styles.activity}>activity</Text>) :
+                            (<Text style={styles.sub_heading}>No data found!</Text>)
+                        }
+
+                    </View>
                 </View>
             </View>
 
-            <View style={styles.activity_block}>
-                <Text style={styles.heading}>My activities</Text>
-
-                <View style={styles.activities_container}>
-
-                    {activities.length > 0 ?
-                        (<Text style={styles.activity}>activity</Text>) :
-                        (<Text style={styles.sub_heading}>No data found!</Text>)
-                    }
-
-                </View>
-            </View>
-        </View>
+            <TetfundFrame />
+        </SafeAreaView>
     )
 }
 

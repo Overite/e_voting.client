@@ -6,7 +6,7 @@ import { Link } from 'expo-router';
 import { images } from '@/constants/images';
 import { utils_styles } from '@/constants/utils_styles';
 import use_lora_font from '@/hooks/fonts/lora_font';
-import { TetfundFrame } from './screens/_layout';
+import { TetfundFrame } from './_layout';
 
 export default function Welcome() {
 
@@ -22,7 +22,7 @@ export default function Welcome() {
                         <Text>Accessibility . Securit y. Accuracy</Text>
                     </View>
 
-                    <Link href={'/screens/register_voters'} style={{ ...styles.cta_btn, fontFamily: 'lora-bold' }} push>Get started</Link>
+                    <Link href={'/dashboard'} style={{ ...styles.cta_btn, fontFamily: 'lora-bold' }} push>Get started</Link>
                 </View>
 
                 <TetfundFrame />
@@ -65,5 +65,5 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         borderRadius: 5,
     },
-    tetfund_frame_style: tetfund_frame_style as ImageStyle
+    tetfund_frame_style
 });

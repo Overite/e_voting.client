@@ -7,24 +7,11 @@ import { RightHeaderDropDown, LeftHeaderComponent, RightHeaderComponent, Tetfund
 import { images } from "@/constants/images";
 import { AntDesign } from '@expo/vector-icons';
 import use_ubuntu_font from "@/hooks/fonts/ubuntu_medium_font";
-import { useEffect } from "react";
-import { e_voting_green } from "@/constants/Colors";
 
 function UserDetails() {
     const { user_id } = useLocalSearchParams();
     const { } = use_ubuntu_font();
     const navigation = useNavigation();
-
-    useEffect(() => {
-        navigation.setOptions({
-            headerLeft: () => <LeftHeaderComponent title='Register voters' btn='back_btn' />,
-            headerRight: () => <RightHeaderComponent />,
-            headerTitle: '',
-            headerStyle: {
-                backgroundColor: e_voting_green,
-            }
-        })
-    }, [navigation])
 
     const user_details = {
         avatar: images.metat_mask,

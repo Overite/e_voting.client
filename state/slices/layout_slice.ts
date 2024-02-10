@@ -5,7 +5,7 @@ import { LayoutState } from '@/interface/layout';
 
 const initialState: LayoutState = {
   right_menu_shown: false,
-  side_bar_shown: true
+  side_bar_shown: false
 }
 
 export const layout_slice = createSlice({

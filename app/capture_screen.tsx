@@ -19,7 +19,7 @@ function capture_screen() {
             <View style={styles.container}>
                 <View style={styles.logo_block}>
                     <Image source={images.evs} />
-                    <Text>Accessibility . Securit y. Accuracy</Text>
+                    <Text>Accessibility . Security.Accuracy</Text>
                 </View>
 
                 <View style={styles.scanner_block}>

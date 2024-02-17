@@ -19,10 +19,10 @@ export default function Welcome() {
                     <View style={styles.logo_block}>
                         <Image source={images.evs} />
 
-                        <Text>Accessibility . Securit y. Accuracy</Text>
+                        <Text>Accessibility . Security. Accuracy</Text>
                     </View>
 
-                    <Link href={'/'} style={{ ...styles.cta_btn, fontFamily: 'lora-bold' }} push>Get started</Link>
+                    <Link href={'/recover_my_wallet/'} style={{ ...styles.cta_btn, fontFamily: 'lora-bold' }} push>Get started</Link>
                 </View>
 
                 <TetfundFrame />

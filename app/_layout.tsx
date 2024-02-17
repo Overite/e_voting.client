@@ -1,5 +1,6 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
+import { DarkTheme, DefaultTheme, ThemeProvider, NavigationContainer,useNavigation } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack'
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
@@ -20,7 +21,7 @@ import { images } from '@/constants/images';
 import { utils_styles } from '@/constants/utils_styles';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
-
+import { Link } from 'expo-router';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -94,10 +95,12 @@ const TetfundFrame = () => {
 const RightHeaderComponent = () => {
 
   const dispatch = useAppDispatch();
+
   const { right_menu_shown } = use_layout_selector();
 
   const set_right_menu_shown = () => {
-    dispatch(toggle_right_menu_shown())
+   dispatch(toggle_right_menu_shown())
+
   }
 
   return <View
@@ -113,6 +116,7 @@ const RightHeaderComponent = () => {
 
 const LeftHeaderComponent = () => {
   const dispatch = useAppDispatch();
+
 
   const toggle_sidebar = () => {
     dispatch(toggle_side_bar_shown())
@@ -163,6 +167,7 @@ const SideBar = () => {
       {/* Header */}
 
       {/* Body */}
+      
       <View style={{ width: '100%', height: 'auto', padding: 20, display: 'flex', gap: 30, flexDirection: 'column', }}>
         <View style={{ width: '100%', height: 'auto', display: 'flex', flexDirection: 'row', gap: 12, alignItems: 'center', padding: 10, backgroundColor: e_voting_green, borderBottomRightRadius: 40 }}>
           <MaterialCommunityIcons name="view-grid-outline" size={24} color="white" />
@@ -179,16 +184,17 @@ const SideBar = () => {
           <Text style={{ fontSize: 20, fontWeight: '800', color: 'black' }}>Authenticate voter</Text>
         </View>
 
-        <View style={{ width: '100%', height: 'auto', display: 'flex', flexDirection: 'row', gap: 12, alignItems: 'center', padding: 10, backgroundColor: 'white', borderBottomRightRadius: 40 }}>
+        <View  style={{ width: '100%', height: 'auto', display: 'flex', flexDirection: 'row', gap: 12, alignItems: 'center', padding: 10, backgroundColor: 'white', borderBottomRightRadius: 40 }}>
           <Ionicons name="wallet-outline" size={24} color="black" />
-          <Text style={{ fontSize: 20, fontWeight: '800', color: 'black' }}>recover wallet</Text>
+          <Link href={'/recover_my_wallet'} style={{ fontSize: 20, fontWeight: '800', color: 'black' }}>Recove wallet</Link>
         </View>
 
         <View style={{ width: '100%', height: 'auto', display: 'flex', flexDirection: 'row', gap: 12, alignItems: 'center', padding: 10, backgroundColor: 'white', borderBottomRightRadius: 40 }}>
           <MaterialIcons name="logout" size={24} color="black" />
-          <Text style={{ fontSize: 20, fontWeight: '800', color: 'black' }}>Logout</Text>
+          <Text style={{ fontSize: 20, fontWeight: '800', color: 'black' }}>Log</Text>
         </View>
       </View>
+      
       {/* Body */}
     </View>}
   </View>
@@ -210,7 +216,7 @@ function RootLayoutNav() {
             headerShadowVisible: false,
           }}
         >
-          <Stack.Screen name="index" options={{ headerShown: false }} />
+          <Stack.Screen name="index" options={{ headerShown:false }} />
           <Stack.Screen name="signin" />
           <Stack.Screen name="capture_screen" options={{
             headerLeft: () =>
@@ -238,6 +244,16 @@ function RootLayoutNav() {
             headerStyle: {
               backgroundColor: e_voting_green,
             }
+          }} />
+
+<Stack.Screen name="recover_my_wallet/index" options={{
+            headerLeft: () => <LeftHeaderComponent />,
+            headerRight: () => <RightHeaderComponent />,
+            headerTitle: '',
+            headerStyle: {
+              backgroundColor: e_voting_green,
+            },
+          
           }} />
 
         </Stack>

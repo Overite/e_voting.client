@@ -7,7 +7,8 @@ import { utils_styles } from "@/constants/utils_styles";
 import { e_voting_green } from "@/constants/Colors";
 import use_ubuntu_font from "@/hooks/fonts/ubuntu_medium_font";
 import { useAppDispatch } from "@/hooks/state/use_base_hooks";
-import { TextInput, Alert,Image,TouchableOpacity } from 'react-native';
+import { TextInput, Alert,Image,TouchableOpacity, ActivityIndicator } from 'react-native';
+import ProgressBar from 'react-native-progress/Bar';
 import {images} from '@/constants/images'
 import { RNCamera } from 'react-native-camera';
 import FingerprintScanner from 'react-native-fingerprint-scanner';
@@ -17,6 +18,7 @@ import use_lora_font from '@/hooks/fonts/lora_font';
 import { Camera, CameraType } from 'expo-camera';
 import  {FaceDetector, FaceDetectionResult}  from 'expo-face-detector';
 
+
 function recover_my_wallet() {
   const [text, setText] = useState('')
   const [type, setType] = useState(CameraType.back);
@@ -24,6 +26,8 @@ function recover_my_wallet() {
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
   const [verifyButtonOpacity, setVerifyButtonOpacity] = useState<number>(0);
   const [scanningMode, setScanningMode] = useState<string | null>(null)
+  const [loading,setLoading] = useState<boolean>(false)
+  const [verificationStatus, setVerificationStatus] = useState<boolean | null>(null)
 
 
   const { } = use_lora_font();
@@ -58,6 +62,7 @@ function recover_my_wallet() {
   const handleFaceScanning = async () => {
     if (cameraRef.current) {
       setScanningMode('face')
+      console.log('face')
       const options = {
         mode: FaceDetector?.Constants?.Mode.fast,
         detectLandmarks: FaceDetector?.Constants?.Landmarks.none,
@@ -68,7 +73,7 @@ function recover_my_wallet() {
 
       // Start face detection
       await cameraRef.current.resumePreview();
-      cameraRef.current.startFaceDetectionAsync(options);
+      cameraRef?.current?.startFaceDetectionAsync(options);
     }
   }
 
@@ -81,6 +86,8 @@ function recover_my_wallet() {
     console.log('Verify button pressed!');
   };
 
+
+
   const handleBiometricScan = async () => {
     try {
       const hasBiometric = await LocalAuthentication.hasHardwareAsync();
@@ -88,15 +95,20 @@ function recover_my_wallet() {
 
       if (hasBiometric && isEnrolled) {
         setScanningMode('fingerprint')
+        setVerificationStatus(null)
+        setLoading(true);
+
+    // Simulating fingerprint verification. Replace this with your actual verification logic.
+    setTimeout(() => {
+      const fingerprintVerified = Math.random() < 0.8; // Simulating 80% success rate
+      setVerificationStatus(fingerprintVerified);
+      setLoading(false);
+    }, 2000);
+       
         const result = await LocalAuthentication.authenticateAsync({
           promptMessage: 'Authenticate to continue',
         });
-
-        if (result.success) {
-          console.log('Biometric authentication successful');
-        } else {
-          console.log('Biometric authentication failed');
-        }
+        setVerificationStatus(result.success);
       } else {
         console.log('Biometric not available or not enrolled');
       }
@@ -104,15 +116,6 @@ function recover_my_wallet() {
       console.error('Error during biometric authentication:', error);
     }
   };
-
-  const handleFingerprintScanning = () => {
-    setScanningMode('fingerprint'); // Set scanning mode to 'fingerprint'
-    // Add your logic for fingerprint scanning here
-  };
-
-
- 
-
 
   return (
     <SafeAreaView style={styles.safe_area_styles}>
@@ -135,7 +138,7 @@ function recover_my_wallet() {
         <Text>No access to camera</Text>
       ) : (
         <View>
-          {scanningMode === 'face' && (
+          {/* {scanningMode === 'face' && ( */}
         <Camera
           ref={cameraRef}
           style={{ flex: 1 }}
@@ -149,20 +152,17 @@ function recover_my_wallet() {
             tracking: true,
           }}
         />
-        )}
+        {/* )} */}
         
-          <View style={{ flex: 1, backgroundColor: 'transparent', flexDirection: 'row' }}>
-            <TouchableOpacity style={{ flex: 0.1, alignSelf: 'flex-end', alignItems: 'center' }} onPress={handleFaceScanning} >
+          {/* <View style={{ flex: 1, backgroundColor: 'transparent', flexDirection: 'row' }}>
+            <TouchableOpacity style={{ flex: 0.1, alignSelf: 'flex-end', alignItems: 'center' }} onPress={handleFaceScanning}>
               <Text style={{ fontSize: 18, marginBottom: 10, color: 'white' }}>Scan Face</Text>
             </TouchableOpacity>
-          </View>
+          </View> */}
         </View>
       )}
     </View>
-
-        
-       
-      <TouchableOpacity  onPress={toggleCameraType} style={{ padding: 16 }}>
+      <TouchableOpacity   onPress={handleFaceScanning} style={{ padding: 16 }}>
        <Image 
        source={images.user}
       />
@@ -170,23 +170,52 @@ function recover_my_wallet() {
          <Text>Click to proceed</Text>
        </View>
       </View>
-       <Text style={styles.fingerprintTitle}>Fingerprint</Text>
-       <View style={styles.fingerprint_Input}>
-       <TouchableOpacity onPress={handleBiometricScan}>
-       <Image 
-       source={images.finger_print} 
-       height={72}
-       width={72}
-       />
-       <Text style={styles.clickToProceed}>Click to proceed</Text>
-      </TouchableOpacity>
-       </View>
+      <View>
+      <Text style={styles.fingerprintTitle}>Fingerprint</Text>
+      <View style={styles.fingerprint_Input}>
+      {scanningMode === 'fingerprint' && (
+        <View>
+          {loading ? (
+            <View style={styles.absolute}>
+              {verificationStatus === null && (
+                <ProgressBar indeterminate width={270} height={10} color="#000" />
+                )}
+                </View>
+          ): (
+            <View>
+              {verificationStatus !== null && (
+                <View style={styles.fingerprint_Input}>
+                  <Image
+                    source={verificationStatus ? require('../../assets/images/success.png') : require('../../assets/images/unchecked.png')}
+                    style={{ width: 72, height: 72 }}
+                  />
+                  <Text>{verificationStatus ?  'Verification succeeded' : 'Verification failed. Please proceed with the facial scan'}</Text>
+                </View>
+              )}
+            </View>
+          )}
+        </View>
+      )}
+      
+      {verificationStatus === null && ( // Render only if not verified
+        <View>
+              <TouchableOpacity onPress={handleBiometricScan}>
+                <Image 
+                  source={images.finger_print} 
+                  height={72}
+                  width={72}
+                />
+                <Text style={styles.clickToProceed}>Click to proceed</Text>
+              </TouchableOpacity>
+        </View>
+           )} 
+           </View>
        <TouchableOpacity style={styles.wallet_btn}
        onPress={handleVerifyButtonPress}>
-        <Text style={styles.title_btn}>Verify</Text>
+        <Text style={styles.title_btn}>{ verificationStatus? 'Recover':'Verify'}</Text>
        </TouchableOpacity>
-      
       </View>
+       </View>
     </SafeAreaView>
   )
 }
@@ -196,6 +225,13 @@ const { safe_area_styles } = utils_styles;
 
 const styles = StyleSheet.create({
     safe_area_styles,
+    absolute: {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+    },
     container: {
         width:'100%',
         height: '100%',
@@ -245,7 +281,7 @@ const styles = StyleSheet.create({
       height:160,
       display:'flex',
       justifyContent:'center',
-      alignContent:'center'
+      alignItems:'center'
     },
     clickToProceed:{
       fontWeight:'300',
@@ -275,7 +311,7 @@ const styles = StyleSheet.create({
       objectFit:'contain',
       display:'flex',
       justifyContent:'center',
-      alignContent:'center'
+      alignItems:'center'
     },
     center:{
       display:'flex',
